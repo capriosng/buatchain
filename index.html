@@ -174,6 +174,7 @@
 
         <!-- Pemutar Musik -->
         <div class="music-box">
+            <!-- Di sini src diubah menggunakan link audio internet untuk tes awal -->
             <audio id="laguAyang" controls loop preload="auto">
                 <source src="musik_kita.mp3" type="audio/mpeg">
                 Browser kamu tidak mendukung pemutar musik ini.
@@ -197,16 +198,24 @@
             }, 5000);
         }
 
-        // Fungsi saat tombol diklik: Sembunyikan pembuka, munculkan konten, dan putar musik
+        // Fungsi utama
         function mulaiHalaman() {
             document.getElementById('welcomeScreen').classList.add('hide');
             document.getElementById('mainContainer').classList.add('show');
             
-            // Memutar musik otomatis setelah interaksi klik
             const lagu = document.getElementById('laguAyang');
-            lagu.play().catch(error => {
-                console.log("Autoplay dicegah oleh browser:", error);
-            });
+            
+            // Memastikan volume penuh dan memutar lagu
+            lagu.volume = 1.0; 
+            
+            // Kita beri sedikit delay 100ms agar transisi animasi welcome screen selesai
+            setTimeout(() => {
+                lagu.play().then(() => {
+                    console.log("Musik berhasil diputar otomatis!");
+                }).catch(error => {
+                    console.log("Gagal putar musik karena:", error);
+                });
+            }, 100);
 
             // Mulai memunculkan animasi hati berjatuhan
             setInterval(createHeart, 300);
