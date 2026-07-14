@@ -13,7 +13,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            /* Menggunakan foto_kita.jpeg sebagai background utama dengan overlay warna pink transparan */
+            background: linear-gradient(135deg, rgba(255, 229, 236, 0.7), rgba(255, 194, 209, 0.7)), 
+                        url('foto_kita.jpeg') no-repeat center center/cover;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -29,7 +31,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            /* Menyamakan background pembuka agar senada dengan body */
+            background: linear-gradient(135deg, rgba(255, 229, 236, 0.8), rgba(255, 194, 209, 0.8)), 
+                        url('foto_kita.jpeg') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,14 +60,16 @@
             animation: pulse 1.5s infinite;
         }
 
-        /* Kontainer Utama */
+        /* Kontainer Utama dengan Efek Kaca Transparan (Glassmorphism) */
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.45); /* Dibuat lebih transparan */
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Garis tepi tipis agar terlihat seperti kaca */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(12px); /* Efek blur blur di belakang container */
+            -webkit-backdrop-filter: blur(12px);
             max-width: 450px;
             width: 90%;
             z-index: 10;
@@ -99,13 +105,16 @@
             color: #ff477e;
             font-size: 24px;
             margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8); /* Membantu teks lebih terbaca */
         }
 
         p {
-            color: #4a4a4a;
+            color: #2b2b2b;
+            font-weight: 500;
             font-size: 16px;
             line-height: 1.6;
             margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         /* Musik Kontrol */
@@ -154,13 +163,11 @@
 </head>
 <body>
 
-    <!-- Halaman Awal untuk Memicu Autoplay Musik -->
     <div class="welcome-screen" id="welcomeScreen">
-        <h2 style="color: #ff477e; margin-bottom: 20px;">DIBACA YA SAYANG ✨</h2>
+        <h2 style="color: #ff477e; margin-bottom: 20px; text-shadow: 1px 1px 5px white;">DIBACA YA SAYANG ✨</h2>
         <button class="btn-buka" onclick="mulaiHalaman()">Klik di Sini ❤️</button>
     </div>
 
-    <!-- Konten Utama -->
     <div class="container" id="mainContainer">
         <div class="photo-frame">
             <img src="foto_kita.jpeg" alt="Foto Kita">
@@ -172,9 +179,7 @@
             "SELAMAT PAGIIII CINTAKUUUU, JANGAN BANYAK MAKAN GADUNG YA"
         </p>
 
-        <!-- Pemutar Musik -->
         <div class="music-box">
-            <!-- Di sini src diubah menggunakan link audio internet untuk tes awal -->
             <audio id="laguAyang" controls loop preload="auto">
                 <source src="musik_kita.mp3" type="audio/mpeg">
                 Browser kamu tidak mendukung pemutar musik ini.
