@@ -13,7 +13,6 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Menggunakan foto_kita.jpeg sebagai background utama dengan overlay warna pink transparan */
             background: linear-gradient(135deg, rgba(255, 229, 236, 0.6), rgba(255, 194, 209, 0.6)), 
                         url('foto_kita.jpeg') no-repeat center center/cover;
             height: 100vh;
@@ -24,14 +23,13 @@
             position: relative;
         }
 
-        /* Halaman Pembuka (Overlay) */
+        /* Halaman Pembuka */
         .welcome-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Menyamakan background pembuka agar senada dengan body */
             background: linear-gradient(135deg, rgba(255, 229, 236, 0.7), rgba(255, 194, 209, 0.7)), 
                         url('foto_kita.jpeg') no-repeat center center/cover;
             display: flex;
@@ -60,32 +58,38 @@
             animation: pulse 1.5s infinite;
         }
 
-        /* Kontainer Utama SEKARANG TRANSPARAN PENUH */
+        /* Kontainer Utama Glassmorphism */
         .container {
             text-align: center;
-            background: transparent; /* Latar belakang putih dihapus */
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 35px 25px;
             max-width: 450px;
             width: 90%;
             z-index: 10;
-            display: none; /* Sembunyi dulu sebelum diklik */
+            box-shadow: 0 8px 32px 0 rgba(255, 71, 126, 0.2);
+            display: none;
+            transition: all 0.5s ease;
         }
 
         .container.show {
             display: block;
-            animation: fadeIn 2s ease-in-out;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
-        /* Bingkai Foto dengan Animasi Zoom */
+        /* Bingkai Foto */
         .photo-frame {
-            width: 220px;
-            height: 220px;
+            width: 200px;
+            height: 200px;
             margin: 0 auto 20px;
             border-radius: 50%;
             overflow: hidden;
             border: 5px solid #ff85a1;
             position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .photo-frame img {
@@ -95,44 +99,83 @@
             animation: softZoom 8s ease-in-out infinite alternate;
         }
 
-        /* Teks Romantis - WARNA DIUBAH KE PUTIH AGAR TERBACA */
+        /* Teks */
         h1 {
-            color: #ffffff; /* Ubah ke putih */
-            font-size: 26px;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Menambah kontras */
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
         }
 
         p {
-            color: #ffffff; /* Ubah ke putih */
+            color: #ffffff;
             font-weight: 600;
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Area Tombol Pilihan */
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .btn-choice {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        #btnYa {
+            background-color: #2ec4b6;
+            color: white;
+        }
+
+        #btnYa:hover {
+            transform: scale(1.1);
+            background-color: #20a396;
+        }
+
+        /* Tombol Gak Dimaafkan (Diberi Posisi Absolute saat Interaksi) */
+        #btnTidak {
+            background-color: #e63946;
+            color: white;
+            position: relative;
+            z-index: 99;
         }
 
         /* Musik Kontrol */
         .music-box {
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         audio {
             width: 100%;
-            max-width: 300px;
+            max-width: 280px;
             border-radius: 30px;
         }
 
-        /* Animasi Hati Berjatuhan - UKURAN DIPERBESAR */
-        .heart {
+        /* Elemen Jatuh (Hati & Emotikon) */
+        .falling-item {
             position: absolute;
-            color: #ff7096;
             pointer-events: none;
             animation: fall linear infinite;
             z-index: 1;
         }
 
-        /* Kumpulan Keyframes Animasi */
+        /* Animasi */
         @keyframes fall {
             0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
@@ -157,21 +200,30 @@
 </head>
 <body>
 
+    <!-- Layar Pembuka -->
     <div class="welcome-screen" id="welcomeScreen">
         <h2 style="color: #ff477e; margin-bottom: 20px; text-shadow: 1px 1px 5px white;">DIBACA YA SAYANG ✨</h2>
         <button class="btn-buka" onclick="mulaiHalaman()">Klik di Sini ❤️</button>
     </div>
 
+    <!-- Kontainer Utama -->
     <div class="container" id="mainContainer">
         <div class="photo-frame">
-            <img src="foto_kita.jpeg" alt="Foto Kita">
+            <!-- ID ditambahkan pada tag img untuk mempermudah penggantian gambar lewat JS -->
+            <img id="displayFoto" src="foto_kita.jpeg" alt="Foto Kita">
         </div>
 
-        <h1>Untuk Chainn Cantik Tersayang... ❤️</h1>
+        <h1 id="titleText">Untuk Chainn Cantik Tersayang... ❤️</h1>
         
-        <p>
-            "SELAMAT PAGIIII CINTAKUUUU, JANGAN BANYAK MAKAN GADUNG YA"
+        <p id="bodyText">
+            "SELAMAT PAGIIII CINTAKUUUU, JANGAN BANYAK MAKAN GADUNG YA. MAAFIN AKU YA?"
         </p>
+
+        <!-- Wrapper Tombol Pilihan Baru -->
+        <div class="btn-wrapper" id="btnWrapper">
+            <button class="btn-choice" id="btnYa" onclick="aksiDimaafkan()">Dimaafkan ❤️</button>
+            <button class="btn-choice" id="btnTidak" onmouseover="hindariTombol()" onclick="hindariTombol()" ontouchstart="hindariTombol(event)">Gak! 😜</button>
+        </div>
 
         <div class="music-box">
             <audio id="laguAyang" controls loop preload="auto">
@@ -182,43 +234,110 @@
     </div>
 
     <script>
-        // Efek Animasi Hati Berjatuhan - UKURAN DIPERBESAR MELALUI JS
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 3 + 's'; // Sedikit lebih lambat agar terlihat megah
-            // Ukuran diperbesar: minimal 30px, maksimal 60px
-            heart.style.fontSize = Math.random() * 30 + 30 + 'px'; 
-            document.body.appendChild(heart);
+        let dimaafkanState = false;
+
+        // Fungsi membuat objek berjatuhan (bisa Hati atau Emotikon Senyum)
+        function createFallingItem(symbol) {
+            const item = document.createElement('div');
+            item.classList.add('falling-item');
+            item.innerHTML = symbol;
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.animationDuration = Math.random() * 3 + 3 + 's';
+            item.style.fontSize = Math.random() * 30 + 30 + 'px'; 
+            document.body.appendChild(item);
 
             setTimeout(() => {
-                heart.remove();
-            }, 6000); // Durasi hidup disesuaikan dengan animasi yang lebih lambat
+                item.remove();
+            }, 6000);
         }
 
-        // Fungsi utama
+        // Interval dasar untuk memunculkan Hati secara berkala
+        let heartInterval;
+        function startHearts() {
+            heartInterval = setInterval(() => {
+                createFallingItem('❤️');
+            }, 300);
+        }
+
+        // Fungsi agar tombol "Gak" selalu menghindari kursor atau sentuhan jari
+        function hindariTombol(e) {
+            if (e) e.preventDefault(); // Mencegah zoom/click bawaan HP saat ditap
+            const btnTidak = document.getElementById('btnTidak');
+            
+            // Mengubah posisi tombol menjadi absolut agar bebas bergerak di layar luar batas wrapper
+            btnTidak.style.position = 'fixed';
+            
+            // Batasan area acak agar tombol tidak keluar layar
+            const maxX = window.innerWidth - btnTidak.offsetWidth - 20;
+            const maxY = window.innerHeight - btnTidak.offsetHeight - 20;
+            
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+            
+            btnTargetX = randomX;
+            btnTargetY = randomY;
+            
+            btnTidak.style.left = randomX + 'px';
+            btnTriangleTop = btnTidak.style.top = randomY + 'px';
+        }
+
+        // Fungsi yang dipicu saat tombol "Dimaafkan" diklik
+        function aksiDimaafkan() {
+            if (dimaafkanState) return; // Mencegah klik ganda
+            dimaafkanState = true;
+
+            // Hentikan hujan hati biasa
+            clearInterval(heartInterval);
+
+            // Ganti Teks Judul dan Pesan Utama
+            document.getElementById('titleText').innerHTML = "YEYY! MAKASIH SAYANG! 🥰";
+            document.getElementById('bodyText').innerHTML = "Cintaku emang yang paling baik sedunia! I Love You So Much, Chainn Cantikku! 💖🌻";
+            
+            // Sembunyikan tombol pilihan
+            document.getElementById('btnWrapper').style.display = 'none';
+
+            // Ganti foto utama jika ada foto versi senang/senyum (opsional, ganti nama file jika perlu)
+            // document.getElementById('displayFoto').src = 'foto_senang.jpeg'; 
+
+            // Efek Hujan Emotikon Cinta & Senyum secara masif selama 6 detik
+            let boomDuration = 6000;
+            let endBoom = Date.now() + boomDuration;
+
+            const emotes = ['😊', '❤️', '💖', '🥰', '✨', '🌸'];
+
+            let boomInterval = setInterval(() => {
+                if (Date.now() > endBoom) {
+                    clearInterval(boomInterval);
+                    // Setelah pesta ledakan usai, kembali ke hujan cinta + senyum yang lebih santai
+                    setInterval(() => {
+                        createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
+                    }, 400);
+                    return;
+                }
+                // Memunculkan banyak emotikon sekaligus saat tombol ditekan
+                createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
+                createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
+            }, 80);
+        }
+
+        // Memulai halaman utama
         function mulaiHalaman() {
             document.getElementById('welcomeScreen').classList.add('hide');
             document.getElementById('mainContainer').classList.add('show');
             
             const lagu = document.getElementById('laguAyang');
-            
-            // Memastikan volume penuh dan memutar lagu
             lagu.volume = 1.0; 
             
-            // Kita beri sedikit delay 100ms agar transisi animasi welcome screen selesai
             setTimeout(() => {
                 lagu.play().then(() => {
-                    console.log("Musik berhasil diputar otomatis!");
+                    console.log("Musik berhasil diputar!");
                 }).catch(error => {
-                    console.log("Gagal putar musik karena:", error);
+                    console.log("Gagal memutar musik:", error);
                 });
             }, 100);
 
-            // Mulai memunculkan animasi hati berjatuhan
-            setInterval(createHeart, 250); // Frekuensi kemunculan sedikit ditingkatkan
+            // Jalankan hujan hati pembuka
+            startHearts();
         }
     </script>
 
