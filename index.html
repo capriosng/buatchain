@@ -116,21 +116,20 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
         }
 
-        /* Area Tombol Pilihan (Sejajar dan Rapi) */
+        /* Area Tombol Pilihan */
         .btn-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 5px; /* Margin bawah dikurangi agar layout lebih padat dan rapi */
             position: relative;
             min-height: 80px;
         }
 
-        /* Menyamakan ukuran tombol di awal */
         .btn-choice {
-            width: 150px;         /* Lebar tombol dibuat sama persis */
-            height: 50px;         /* Tinggi tombol dibuat sama persis */
+            width: 150px;
+            height: 50px;
             font-size: 16px;
             font-weight: bold;
             border: none;
@@ -158,32 +157,27 @@
             color: white;
             position: relative;
             z-index: 99;
-            transition: all 0.15s ease; /* Transisi gerakan menghindar */
+            transition: all 0.15s ease;
         }
 
-        /* Musik Kontrol */
+        /* MUSIK KONTROL DISEMBUYINKAN TOTAL */
         .music-box {
-            margin-top: 10px;
+            display: none;
         }
 
-        audio {
-            width: 100%;
-            max-width: 280px;
-            border-radius: 30px;
-        }
-
-        /* Elemen Jatuh */
+        /* Elemen Jatuh dari Paling Atas */
         .falling-item {
-            position: absolute;
+            position: fixed;
+            top: -60px;
             pointer-events: none;
             animation: fall linear infinite;
-            z-index: 1;
+            z-index: 9999;
         }
 
-        /* Animasi */
+        /* Animasi Jatuh */
         @keyframes fall {
-            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(115vh) rotate(360deg); opacity: 0; }
         }
 
         @keyframes fadeIn {
@@ -223,14 +217,15 @@
             "MAAF YA CINTAKUUU SUDAH GIGIT TANGANMU SAMPE BIRU, AKU JANJI TIDAK AKAN MENGULANGINYA"
         </p>
 
-        <!-- Wrapper Tombol Pilihan (Sejajar Sejak Awal) -->
+        <!-- Wrapper Tombol Pilihan -->
         <div class="btn-wrapper" id="btnWrapper">
             <button class="btn-choice" id="btnYa" onclick="aksiDimaafkan()">Dimaafkan ❤️</button>
             <button class="btn-choice" id="btnTidak" onmouseover="hindariTombol()" onclick="hindariTombol()" ontouchstart="hindariTombol(event)">Gak! 😜</button>
         </div>
 
+        <!-- Musik Latar (Atribut 'controls' dihapus dan dimasukkan ke kelas 'music-box' yang disembunyikan) -->
         <div class="music-box">
-            <audio id="laguAyang" controls loop preload="auto">
+            <audio id="laguAyang" loop preload="auto">
                 <source src="musik_kita.mp3" type="audio/mpeg">
                 Browser kamu tidak mendukung pemutar musik ini.
             </audio>
@@ -246,43 +241,43 @@
             item.classList.add('falling-item');
             item.innerHTML = symbol;
             item.style.left = Math.random() * 100 + 'vw';
-            item.style.animationDuration = Math.random() * 3 + 3 + 's';
-            item.style.fontSize = Math.random() * 30 + 30 + 'px'; 
+            item.style.animationDuration = Math.random() * 2.5 + 2.5 + 's'; 
+            item.style.fontSize = Math.random() * 25 + 25 + 'px'; 
             document.body.appendChild(item);
 
             setTimeout(() => {
                 item.remove();
-            }, 6000);
+            }, 5500);
         }
 
-        // Interval dasar hujan hati
+        // Interval dasar hujan hati pembuka
         let heartInterval;
         function startHearts() {
             heartInterval = setInterval(() => {
                 createFallingItem('❤️');
-            }, 300);
+            }, 350);
         }
 
-        // Fungsi menghindar (Begitu didekati baru tombol akan MEMBESAR dan berpindah posisi)
+        // Fungsi menghindar
         function hindariTombol(e) {
             if (e) e.preventDefault(); 
             const btnTidak = document.getElementById('btnTidak');
             
-            // Mengubah posisi tombol menjadi fixed agar bebas bergerak
-            btnTargetPosition = btnTidak.style.position = 'fixed';
+            btnTidak.style.position = 'fixed';
             
-            // MEMBESARKAN UKURAN TOMBOL SAAT DIHINDARI (Kejutan!)
             btnTidak.style.width = '180px';
             btnTidak.style.height = '65px';
             btnTidak.style.fontSize = '22px';
             btnTidak.style.borderRadius = '35px';
 
-            // Batasan koordinat acak agar tombol besar tidak keluar layar
             const maxX = window.innerWidth - 180 - 40;
             const maxY = window.innerHeight - 65 - 40;
             
             const randomX = Math.max(20, Math.floor(Math.random() * maxX));
             const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+            
+            btnInsideX = randomX;
+            btnInsideY = randomY;
             
             btnTidak.style.left = randomX + 'px';
             btnTidak.style.top = randomY + 'px';
@@ -300,25 +295,36 @@
             
             document.getElementById('btnWrapper').style.display = 'none';
 
+            const emotes = ['😊', '❤️', '💖', '🥰', '✨', '🌸', '🌹', '😍', '💕'];
+
+            // Ledakan instan 50 emotikon pertama
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
+                }, Math.random() * 800);
+            }
+
+            // Hujan deras berkelanjutan
             let boomDuration = 6000;
             let endBoom = Date.now() + boomDuration;
-
-            const emotes = ['😊', '❤️', '💖', '🥰', '✨', '🌸'];
 
             let boomInterval = setInterval(() => {
                 if (Date.now() > endBoom) {
                     clearInterval(boomInterval);
                     setInterval(() => {
                         createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
-                    }, 400);
+                    }, 100);
                     return;
                 }
+                
                 createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
                 createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
-            }, 80);
+                createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
+                createFallingItem(emotes[Math.floor(Math.random() * emotes.length)]);
+            }, 45);
         }
 
-        // Memulai halaman
+        // Memulai halaman & memutar musik di latar belakang
         function mulaiHalaman() {
             document.getElementById('welcomeScreen').classList.add('hide');
             document.getElementById('mainContainer').classList.add('show');
@@ -328,7 +334,7 @@
             
             setTimeout(() => {
                 lagu.play().then(() => {
-                    console.log("Musik berhasil diputar!");
+                    console.log("Musik diputar di latar belakang!");
                 }).catch(error => {
                     console.log("Gagal memutar musik:", error);
                 });
